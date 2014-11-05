@@ -1,0 +1,31 @@
+{{set . "title" "sudoba.sh - Home"}}
+{{append . "externalScripts" .mapsApiKey}}
+{{append . "moreScripts" "js/maps.js"}}
+{{append . "moreStyles" "css/maps.css"}}
+{{template "header.html" .}}
+
+<div class="container">
+  <div class="row">
+    <div class="span6">
+      {{template "flash.html" .}}
+    </div>
+  </div>
+</div>
+
+<div id="whoisForm">
+
+	<form action="{{url "Whois.Index"}}" id="formWhois" method="POST">
+		<p class="field">
+		<label>IP Address:</label>
+		<input type="text" name="ip" size="19" value="{{.flash.ip}}" />
+		</p>
+		<p class="buttons">
+		<input type="submit" value="Lookup" />
+		</p>
+	</form>
+
+</div>
+
+<div id="map-canvas"></div>
+
+{{template "footer.html" .}}
