@@ -12,19 +12,10 @@
 	</div>
 </div>
 
-<div id="whoisForm">
-
-	<form action="{{url "Whois.Index"}}" id="formWhois" method="POST">
-		<p class="field">
-		<label>IP Address:</label>
-		<input type="text" name="ip" size="19" value="{{.flash.ip}}" />
-		</p>
-		<p class="buttons">
-		<input type="submit" value="Lookup" />
-		</p>
-	</form>
-
-</div>
+<form action="{{url "Whois.Index"}}" id="whoisForm">
+	<input type="text" name="ip" placeholder="IP Address">
+	<input type="submit" value="Lookup">
+</form>
 
 <div id="map-canvas"></div>
 
