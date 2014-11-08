@@ -17,6 +17,9 @@ type whoisResults struct {
 	IP			net.IP
 	Request		string
 	Forwarded	string
+	City		map[string]string
+	//Geo			*geoip2.City
+
 }
 
 func (c Whois) Index() revel.Result {
@@ -53,11 +56,15 @@ func (c Whois) getInfo(ip net.IP) whoisResults {
 	results.Latitude = record.Location.Latitude
 	results.Longitude = record.Location.Longitude
 	results.IsoCode = record.Country.IsoCode
+    results.City = record.City.Names
+
 	results.IP = ip
 	results.Request = c.Request.RemoteAddr
 	results.Forwarded = c.Request.Header.Get("X-FORWARDED-FOR")
 
-	revel.INFO.Printf("Result: %v", results)
+	//results.Geo = record
 
+	revel.INFO.Printf("Result: %v", results)
+	//revel.INFO.Printf("Record: %v", record)
 	return results
 }

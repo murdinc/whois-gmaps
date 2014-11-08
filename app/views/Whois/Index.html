@@ -11,12 +11,9 @@
 		</div>
 	</div>
 </div>
-
-<form action="{{url "Whois.Index"}}" id="whoisForm">
-	<input type="text" name="ip" placeholder="IP Address">
-	<input type="submit" value="Lookup">
-</form>
-
+<form action="{{url "Whois.Index"}}" id="whois-input-form">
+<input id="whois-input" class="controls" type="text" name="ip" placeholder="IP Address" action="{{url "Whois.Index"}}">
+</form> 
 <div id="map-canvas"></div>
 
 {{template "footer.html" .}}

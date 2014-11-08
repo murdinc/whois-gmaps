@@ -17,6 +17,7 @@ function initialize() {
 
 	function geoSuccess(position) {
 		setLatLong( position.coords.latitude, position.coords.longitude );
+		console.log("Position: " + position);
 		drawMap();
 
 	}
@@ -32,9 +33,9 @@ function initialize() {
 	}
 
 	function infoWindow(data) {
-		content = '<div id="content">'+
+		content = '<div id="whoisInfo">'+
 			'<h2 id="firstHeading" class="firstHeading">'+data.IP+'</h2>'+
-            '<h4 id="secondHeading" class="secondHeading">'+data.IsoCode+'</h4>'+
+            '<h4 id="secondHeading" class="secondHeading">'+data.City.en+', '+data.IsoCode+'</h4>'+
 			'<div id="bodyContent">'+
 			'<p><b>Latitude</b>: '+data.Latitude+'</p>' +
 			'<p><b>Longitude</b>: '+data.Longitude+'</p>' +
@@ -62,12 +63,17 @@ function initialize() {
 		map = new google.maps.Map(document.getElementById('map-canvas'),
 				mapOptions);
 
+		// Create the search box and link it to the UI element.
+		var input = /** @type {HTMLInputElement} */(
+				document.getElementById('whois-input-form'));
+		map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+
 		dropPin();
 
 	}
 
 	// Attach a submit handler to the form
-	$( "#whoisForm" ).submit(function( event ) {
+	$( "#whois-input-form" ).submit(function( event ) {
 
 		// Stop form from submitting normally
 		event.preventDefault();
@@ -77,11 +83,11 @@ function initialize() {
 		term = $form.find( "input[name='ip']" ).val(),
 		url = $form.attr( "action" );
 
-	// Send the data using post as json
-	var posting = $.post( url, { ip: term }, null, 'json' );
+		// Send the data using post as json
+		var posting = $.post( url, { ip: term }, null, 'json' );
 
-	// Put the results in a div
-	posting.done(function( data ) {
+		// Drop a pin when we have a result
+		posting.done(function( data ) {
 		console.log( data );
 
 		setLatLong(data.Latitude, data.Longitude);
