@@ -10,12 +10,21 @@ type Whois struct {
 	*revel.Controller
 }
 
+type whoisResults struct {
+	Latitude	float64
+	Longitude	float64
+	IsoCode		string
+	IP			net.IP
+	Request		string
+	Forwarded	string
+}
+
 func (c Whois) Index() revel.Result {
 
 	// If this is a POST we want to return JSON info
 	if c.Params.Get("METHOD") == "POST" {
 		ip :=  net.ParseIP(c.Params.Get("ip"))
-		revel.INFO.Printf("Looking up IP address: %s %v", ip, c.Params)
+		//revel.INFO.Printf("Looking up IP address: %s %v", ip, c.Params)
 		return c.RenderJson( c.getInfo(ip) )
 	}
 
@@ -26,7 +35,10 @@ func (c Whois) Index() revel.Result {
 
 }
 
-func (c Whois) getInfo(ip net.IP) *geoip2.City {
+func (c Whois) getInfo(ip net.IP) whoisResults {
+
+	var results whoisResults
+
 	db, err := geoip2.Open("geoip/GeoLite2-City.mmdb")
 	if err != nil {
 		revel.ERROR.Print(err)
@@ -38,7 +50,14 @@ func (c Whois) getInfo(ip net.IP) *geoip2.City {
 		revel.ERROR.Print(err)
 	}
 
-	//revel.INFO.Printf("Record: %v", record)
+	results.Latitude = record.Location.Latitude
+	results.Longitude = record.Location.Longitude
+	results.IsoCode = record.Country.IsoCode
+	results.IP = ip
+	results.Request = c.Request.RemoteAddr
+	results.Forwarded = c.Request.Header.Get("X-FORWARDED-FOR")
 
-	return record
+	revel.INFO.Printf("Result: %v", results)
+
+	return results
 }
