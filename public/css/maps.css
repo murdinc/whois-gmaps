@@ -16,9 +16,6 @@ body {
 	width: auto; display:inline;
 }
 
-
-
-
 .controls {
 	margin-top: 16px;
 	border: 1px solid transparent;
@@ -48,14 +45,3 @@ body {
 	width: 401px;
 }
 
-#type-selector {
-	color: #fff;
-	background-color: #4d90fe;
-	padding: 5px 11px 0px 11px;
-}
-
-#type-selector label {
-	font-family: Roboto;
-	font-size: 13px;
-	font-weight: 300;
-}
