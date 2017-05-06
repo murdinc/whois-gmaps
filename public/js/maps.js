@@ -5,21 +5,20 @@ function initialize() {
 	var content;
 	var marker;
 
-	if (navigator.geolocation) {
-		var timeoutVal = 10 * 1000 * 1000;
-		navigator.geolocation.getCurrentPosition(
-				geoSuccess, 
-				null,
-				{ enableHighAccuracy: true, timeout: timeoutVal, maximumAge: 0 }
-				);
 
-	}
+	$.getJSON('https://ipinfo.io/geo', function(response) {
+	    var loc = response.loc.split(',');
+	    var coords = {
+	        latitude: loc[0],
+	        longitude: loc[1]
+	    };
+	    geoSuccess(coords);
+	});
 
-	function geoSuccess(position) {
-		setLatLong( position.coords.latitude, position.coords.longitude );
-		console.log("Position: " + position);
+
+	function geoSuccess(coords) {
+		setLatLong( coords.latitude, coords.longitude );
 		drawMap();
-
 	}
 
 	function dropPin() {
